@@ -1,0 +1,23 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html>
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Web Shell</title>
+    <link rel="stylesheet" media="screen" type="text/css" href="/static/style.css" />
+  </head>
+
+  <body onload="document.getElementById('input_prompt').focus();">
+    <div id="log">
+        $log
+    </div>
+    <div id="prompt">
+      <form method="post">
+        $prompt
+        <input type="text" name="prompt" id="input_prompt" autocomplete="off" />
+      </form>
+    </div>
+  </body>
+
+</html>

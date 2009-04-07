@@ -1,0 +1,18 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  border: 0px;
+  font-family: monospace;
+}
+
+body {
+  margin: 0.5em;
+}
+
+.directory {
+  color: #729fcf;
+}
+
+.prompt {
+  color: #8ae234;
+}
