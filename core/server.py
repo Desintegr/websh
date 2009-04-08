@@ -13,3 +13,8 @@ class Server(BaseHTTPServer.HTTPServer):
     file = open('data/style.css', 'r')
     self.css = file.read()
     file.close()
+
+    # read favicon
+    file = open('data/terminal.png', 'r')
+    self.favicon = file.read()
+    file.close()
