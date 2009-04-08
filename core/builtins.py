@@ -44,7 +44,7 @@ class Builtins(Plugin):
     ls = ''
     for i, command in enumerate(commands):
       ls += command.ljust(15, ' ').replace(' ', '&nbsp;')
-      if (i + 1) % 5 == 0 and i != len(commands)-1:
+      if (i + 1) % 5 == 0 and i != len(commands) - 1:
         ls += "<br/>\n"
 
     self.shell.addlog(ls)
