@@ -11,7 +11,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
   def do_GET(self):
     # serve CSS
-    if(self.path == '/static/style.css'):
+    if self.path == '/static/style.css':
       self.send_response(200)
       self.send_header('Content-Type', 'text/css')
       self.end_headers()
@@ -19,7 +19,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
       self.wfile.write(self.server.css);
 
     # server favicon
-    elif(self.path == '/static/favicon.png'):
+    elif self.path == '/static/favicon.png':
       self.send_response(200)
       self.send_header('Content-Type', 'image/png')
       self.end_headers()

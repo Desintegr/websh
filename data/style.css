@@ -9,10 +9,15 @@ body {
   margin: 0.5em;
 }
 
-.directory {
+.blue {
   color: #729fcf;
 }
 
-.prompt {
+.green {
   color: #8ae234;
 }
+
+.grey {
+  color: #555753;
+}
+
