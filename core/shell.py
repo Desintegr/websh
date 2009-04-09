@@ -16,10 +16,18 @@ class Shell:
 
   def execute(self, command):
     self.addlog(self.__prompt() + command)
+
+    # no command
+    if not command:
+      return
+
+    # execute builints command
     try:
       self.builtins.execute(command)
-    except:
+    except AttributeError:
       self.addlog('websh: command not found: %s' % command)
+    except Exception, e:
+      print 'error in builtins : %s' % e
 
   def addlog(self, log=''):
     self.log += log + "<br/>\n"
