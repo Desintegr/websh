@@ -16,7 +16,12 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
       self.send_header('Content-Type', 'text/css')
       self.end_headers()
 
-      self.wfile.write(self.server.css);
+      # read CSS file
+      file = open('data/style.css', 'r')
+      css = file.read()
+      file.close()
+
+      self.wfile.write(css);
 
     # server favicon
     elif self.path == '/static/favicon.png':
@@ -24,7 +29,12 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
       self.send_header('Content-Type', 'image/png')
       self.end_headers()
 
-      self.wfile.write(self.server.favicon);
+      # read favicon file
+      file = open('data/terminal.png', 'r')
+      favicon = file.read()
+      file.close()
+
+      self.wfile.write(favicon);
 
     else:
       self.send_response(200)

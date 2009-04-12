@@ -5,11 +5,6 @@ import string
 class Shell:
 
   def __init__(self):
-    # read template file
-    file = open('data/template.html', 'r')
-    self.template = string.Template(file.read())
-    file.close()
-
     self.directory = '~'
     self.log = ''
     self.builtins = Builtins(self)
@@ -39,4 +34,9 @@ class Shell:
            + '<span class="green">$</span> '
 
   def __str__(self):
-    return self.template.substitute(prompt=self.__prompt(), log=self.log)
+    # read template file
+    file = open('data/template.html', 'r')
+    template = string.Template(file.read())
+    file.close()
+
+    return template.substitute(prompt=self.__prompt(), log=self.log)
