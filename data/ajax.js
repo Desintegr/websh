@@ -13,11 +13,13 @@ $(document).ready(function(){
         $.getJSON('ajax/history_up', function(data) {
           $('#input_prompt').attr('value', data.history);
         });
+        e.preventDefault();
         break;
       case 40: // arrow key down
         $.getJSON('ajax/history_down', function(data) {
           $('#input_prompt').attr('value', data.history);
         });
+        e.preventDefault();
         break;
       case 9: // tab key
         var value = $('#input_prompt').attr('value');
@@ -29,8 +31,8 @@ $(document).ready(function(){
           else {
             $('#completion').html(data.completion);
           }
-          document.getElementById('input_prompt').focus();
         });
+        e.preventDefault();
         break;
     }
   });
