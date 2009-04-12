@@ -9,7 +9,7 @@ class Shell:
     self.directory = '~'
     self.log = ''
     self.builtins = Builtins(self)
-    self.javascript = 'focusOnInput();'
+    self.javascript = ''
 
   def execute(self, command):
     self.add_log(self.__prompt() + command)
@@ -27,13 +27,18 @@ class Shell:
       print 'error in builtins : %s' % e
 
   def add_log(self, log=''):
-    self.log += log + "<br/>\n"
+    self.log += "%s<br/>\n" % log
 
   def not_found(self, command):
       self.add_log('websh: command not found: %s' % command)
 
   def __prompt(self):
     return '<span class="blue">%s</span> <span class="green">$</span> ' % self.directory
+
+  def __javascript(self):
+    javascript = self.javascript
+    self.javascript = ''
+    return javascript
 
   def __str__(self):
     # read template file
@@ -43,5 +48,5 @@ class Shell:
 
     return template.substitute(prompt=self.__prompt(),
                                log=self.log,
-                               javascript=self.javascript)
+                               javascript=self.__javascript())
 

@@ -1,6 +1,7 @@
 from plugin import Plugin, UnknownCommandError
 
 import cgi
+import re
 
 class Builtins(Plugin):
 
@@ -109,10 +110,11 @@ class Builtins(Plugin):
 
   def open(self, *args):
     """
-    open urls
+    open urls in new windows
 
-    url*
-    open urls in the webbrowser.
+    url+
     """
 
-    pass
+    for arg in args:
+      url = re.sub('^http://', '', arg)
+      self.shell.javascript += "openURL('http://%s');" % url

@@ -9,6 +9,10 @@ body {
   margin: 0.5em;
 }
 
+#input_prompt {
+  width: 50%;
+}
+
 .blue {
   color: #729fcf;
 }

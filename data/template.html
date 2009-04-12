@@ -10,14 +10,14 @@
     <script type="text/javascript" src="/static/functions.js"></script>
   </head>
 
-  <body onload="$javascript">
+  <body onload="focusOnInput();$javascript" onclick="focusOnInput();">
     <div id="log">
         $log
     </div>
     <div id="prompt">
       <form method="post">
         $prompt
-        <input type="text" name="prompt" id="input_prompt" autocomplete="off" />
+        <input type="text" name="prompt" id="input_prompt" autocomplete="off"/>
       </form>
     </div>
   </body>
