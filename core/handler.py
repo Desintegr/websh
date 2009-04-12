@@ -10,32 +10,13 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
     self.end_headers()
 
   def do_GET(self):
-    # serve CSS
+    # serve static files
     if self.path == '/static/style.css':
-      self.send_response(200)
-      self.send_header('Content-Type', 'text/css')
-      self.end_headers()
-
-      # read CSS file
-      file = open('data/style.css', 'r')
-      css = file.read()
-      file.close()
-
-      self.wfile.write(css);
-
-    # server favicon
+      self.__serve_file('data/style.css', 'text/css')
     elif self.path == '/static/favicon.png':
-      self.send_response(200)
-      self.send_header('Content-Type', 'image/png')
-      self.end_headers()
-
-      # read favicon file
-      file = open('data/terminal.png', 'r')
-      favicon = file.read()
-      file.close()
-
-      self.wfile.write(favicon);
-
+      self.__serve_file('data/terminal.png', 'text/html')
+    elif self.path == '/static/functions.js':
+      self.__serve_file('data/functions.js', 'text/javascript')
     else:
       self.send_response(200)
       self.send_header('Content-Type', 'text/html')
@@ -57,3 +38,15 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     self.server.shell.execute(prompt)
     self.wfile.write(self.server.shell)
+
+  def __serve_file(self, file, type):
+    self.send_response(200)
+    self.send_header('Content-Type', type)
+    self.end_headers()
+
+    # read file
+    f = open(file, 'r')
+    content = f.read()
+    f.close()
+
+    self.wfile.write(content);

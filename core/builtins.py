@@ -1,41 +1,87 @@
 from plugin import Plugin
 
+import cgi
+
 class Builtins(Plugin):
 
-  def clear(self):
+  def clear(self, *args):
     """clear the terminal screen"""
     self.shell.log = ''
 
-  def help(self):
-    """display help text"""
+  def help(self, *args):
+    """display help text
+
+    [command]...
+    """
+
+    # keep only the first argument
+    args = list(args)
+    del args[1:]
+
     commands = []
 
-    for attr in dir(self):
+    for attr in args or dir(self):
       if callable(eval('self.' + attr)) \
          and not attr.startswith('__') \
          and not attr == 'execute':
          commands.append(attr)
 
-    self.shell.addlog('<span class="grey">help</span>')
-    self.shell.addlog()
-    self.shell.addlog('<span class="grey">' \
+    if not args:
+      self.shell.add_log('<span class="grey">help</span>')
+    else:
+      self.shell.add_log('<span class="grey">help: </span> <span class="blue">%s</span>' % args[0])
+
+    self.shell.add_log()
+    self.shell.add_log('<span class="grey">' \
                       + 'command'.ljust(15, ' ').replace(' ', '&nbsp;') \
-                      + '</span>' \
-                      + '<span class="grey">function</span>')
+                      + 'parameters'.ljust(15, ' ').replace(' ', '&nbsp;') \
+                      + 'function'.ljust(15, ' ').replace(' ', '&nbsp;') \
+                      + '</span>')
 
     for command in commands:
-      doc = eval('self.' + command).__doc__
-      if not doc:
-        doc = 'not documented'
-      self.shell.addlog(command.ljust(15, ' ').replace(' ', '&nbsp;') + doc)
+      docstring = eval('self.' + command).__doc__
 
-    self.shell.addlog()
+      if not docstring:
+        function = 'not documented'
+        parameters = ''
+        details = ''
+      else:
+        docstring = docstring.strip().splitlines()
 
-  def ls(self):
-    """list commands"""
+        try:
+          function = docstring[0].strip()
+        except IndexError:
+          function = ''
+
+        try:
+          parameters = docstring[2].strip()
+        except IndexError:
+          parameters = ''
+
+        try:
+          details = docstring[3].strip()
+        except IndexError:
+          details = ''
+
+      self.shell.add_log(command.ljust(15, ' ').replace(' ', '&nbsp;') \
+                         + cgi.escape(parameters.ljust(15, ' ')).replace(' ', '&nbsp;') \
+                         + cgi.escape(function.ljust(15, ' ')).replace(' ', '&nbsp;'))
+
+      if args and details:
+        self.shell.add_log()
+        self.shell.add_log(details)
+
+    self.shell.add_log()
+
+  def ls(self, *args):
+    """list commands
+
+    [command]...
+    this exists just for convenience. Use <span class="blue">help</span> for help.
+    """
     commands = []
 
-    for attr in dir(self):
+    for attr in args or dir(self):
       if callable(eval('self.' + attr)) \
          and not attr.startswith('__') \
          and not attr == 'execute':
@@ -47,5 +93,5 @@ class Builtins(Plugin):
       if (i + 1) % 5 == 0 and i != len(commands) - 1:
         ls += "<br/>\n"
 
-    self.shell.addlog(ls)
-    self.shell.addlog()
+    self.shell.add_log(ls)
+    self.shell.add_log()
