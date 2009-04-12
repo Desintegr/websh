@@ -1,4 +1,5 @@
 from builtins import Builtins
+from completion import Completion
 from history import History
 from plugin import Plugin, UnknownCommandError
 
@@ -14,6 +15,7 @@ class Shell:
     self.builtins = Builtins(self)
 
     self.history = History()
+    self.completion = Completion(self)
 
   def execute(self, command):
     self.add_log(self.__prompt() + command)

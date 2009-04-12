@@ -20,17 +20,28 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
     elif self.path == '/static/ajax.js':
       self.__serve_file('data/ajax.js', 'text/javascript')
 
-    # ajax requests
+    # AJAX requests
     elif self.path == '/ajax/history_up':
       self.send_response(200)
-      self.send_header('Content-Type', 'text/plain')
+      self.send_header('Content-Type', 'application/json')
       self.end_headers()
+
       self.wfile.write(self.server.shell.history.up())
+
     elif self.path == '/ajax/history_down':
       self.send_response(200)
-      self.send_header('Content-Type', 'text/plain')
+      self.send_header('Content-Type', 'application/json')
       self.end_headers()
+
       self.wfile.write(self.server.shell.history.down())
+
+    elif re.match('/ajax/completion', self.path):
+      self.send_response(200)
+      self.send_header('Content-Type', 'application/json')
+      self.end_headers()
+
+      complete = re.match('/ajax/completion\?complete=(.*)', self.path).group(1)
+      self.wfile.write(self.server.shell.completion.complete(complete))
 
     else:
       self.send_response(200)

@@ -1,3 +1,5 @@
+import json
+
 class History:
 
   def __init__(self):
@@ -15,11 +17,10 @@ class History:
     if self.position < len(self.history) - 1:
       self.position += 1
 
-    return self.history[self.position - 1]
+    return json.dumps({'history': self.history[self.position - 1]})
 
   def down(self):
     if self.position > 0:
       self.position -= 1
 
-    return self.history[self.position - 1]
-
+    return json.dumps({'history': self.history[self.position - 1]})
