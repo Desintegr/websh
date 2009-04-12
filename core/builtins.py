@@ -117,4 +117,4 @@ class Builtins(Plugin):
 
     for arg in args:
       url = re.sub('^http://', '', arg)
-      self.shell.javascript += "openURL('http://%s');" % url
+      self.shell.javascript += "window.open('http://%s');" % url

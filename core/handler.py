@@ -15,8 +15,23 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
       self.__serve_file('data/style.css', 'text/css')
     elif self.path == '/static/favicon.png':
       self.__serve_file('data/terminal.png', 'text/html')
-    elif self.path == '/static/functions.js':
-      self.__serve_file('data/functions.js', 'text/javascript')
+    elif self.path == '/static/jquery.js':
+      self.__serve_file('data/jquery.js', 'text/javascript')
+    elif self.path == '/static/ajax.js':
+      self.__serve_file('data/ajax.js', 'text/javascript')
+
+    # ajax requests
+    elif self.path == '/ajax/history_up':
+      self.send_response(200)
+      self.send_header('Content-Type', 'text/plain')
+      self.end_headers()
+      self.wfile.write(self.server.shell.history.up())
+    elif self.path == '/ajax/history_down':
+      self.send_response(200)
+      self.send_header('Content-Type', 'text/plain')
+      self.end_headers()
+      self.wfile.write(self.server.shell.history.down())
+
     else:
       self.send_response(200)
       self.send_header('Content-Type', 'text/html')

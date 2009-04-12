@@ -11,7 +11,6 @@ class UnknownCommandError(Exception):
 
 class Plugin:
 
-
   def __init__(self, shell):
     self.shell = shell
 

@@ -1,4 +1,5 @@
 from builtins import Builtins
+from history import History
 from plugin import Plugin, UnknownCommandError
 
 import string
@@ -8,11 +9,15 @@ class Shell:
   def __init__(self):
     self.directory = '~'
     self.log = ''
-    self.builtins = Builtins(self)
     self.javascript = ''
+
+    self.builtins = Builtins(self)
+
+    self.history = History()
 
   def execute(self, command):
     self.add_log(self.__prompt() + command)
+    self.history.append(command)
 
     # no command
     if not command:
