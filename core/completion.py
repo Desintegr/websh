@@ -19,6 +19,7 @@ class Completion:
     if len(commands) == 1:
       completion = commands[0]
     else:
+      # pretty formatting: 5 words max per line
       completion = ''
       for i, command in enumerate(commands):
         completion += command.ljust(15, ' ').replace(' ', '&nbsp;')

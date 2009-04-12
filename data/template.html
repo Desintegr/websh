@@ -9,24 +9,12 @@
     <link rel="stylesheet" media="screen" type="text/css" href="/static/style.css" />
     <script type="text/javascript" src="/static/jquery.js"></script>
     <script type="text/javascript" src="/static/ajax.js"></script>
-
-    <script type="text/javascript">
-      $$(document).ready(function() {
-          $javascript
-      });
-    </script>
   </head>
 
   <body>
-    <div id="log">
-        $log
-    </div>
-    <div id="prompt">
-      <form method="post">
-        $prompt
-        <input type="text" name="prompt" id="input_prompt" autocomplete="off"/>
-      </form>
-    </div>
+    <div id="log">$log</div>
+    <span id="prompt">$prompt</span>
+    <input type="text" id="input" name="prompt" autocomplete="off" />
     <div id="completion"></div>
   </body>
 

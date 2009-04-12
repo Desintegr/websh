@@ -9,7 +9,7 @@ body {
   margin: 0.5em;
 }
 
-#input_prompt {
+#input {
   width: 50%;
 }
 
@@ -24,4 +24,3 @@ body {
 .grey {
   color: #555753;
 }
-
