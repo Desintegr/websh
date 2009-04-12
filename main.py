@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python2.6
 
 from core.handler import Handler
 from core.server import Server
