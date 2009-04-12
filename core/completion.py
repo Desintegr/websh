@@ -10,7 +10,7 @@ class Completion:
     commands = []
 
     for attr in dir(self.shell.builtins):
-      if callable(eval('self.shell.builtins.' + attr)) \
+      if callable(eval('self.shell.builtins.{0}'.format(attr))) \
          and not attr.startswith('__') \
          and not attr == 'execute' \
          and re.match(comp, attr):
@@ -26,4 +26,4 @@ class Completion:
           completion += "<br/>\n"
 
     return json.dumps({'count': len(commands),
-                      'completion': completion})
+                       'completion': completion})

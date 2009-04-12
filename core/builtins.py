@@ -25,7 +25,7 @@ class Builtins(Plugin):
 
     for attr in args or dir(self):
       try:
-        if callable(eval('self.' + attr)) \
+        if callable(eval('self.{0}'.format(attr))) \
            and not attr.startswith('__') \
            and not attr == 'execute':
            commands.append(attr)
@@ -35,7 +35,7 @@ class Builtins(Plugin):
     if not args:
       self.shell.add_log('<span class="grey">help</span>')
     else:
-      self.shell.add_log('<span class="grey">help: </span> <span class="blue">%s</span>' % args[0])
+      self.shell.add_log('<span class="grey">help: </span> <span class="blue">{0}</span>'.format(args[0]))
 
     self.shell.add_log()
     self.shell.add_log('<span class="grey">' \
@@ -45,7 +45,7 @@ class Builtins(Plugin):
                       + '</span>')
 
     for command in commands:
-      docstring = eval('self.' + command).__doc__
+      docstring = eval('self.{0}'.format(command)).__doc__
 
       if not docstring:
         function = 'not documented'
@@ -94,7 +94,7 @@ class Builtins(Plugin):
     commands = []
 
     for attr in args or dir(self):
-      if callable(eval('self.' + attr)) \
+      if callable(eval('self.{0}'.format(attr))) \
          and not attr.startswith('__') \
          and not attr == 'execute':
          commands.append(attr)
@@ -117,4 +117,4 @@ class Builtins(Plugin):
 
     for arg in args:
       url = re.sub('^http://', '', arg)
-      self.shell.javascript += "window.open('http://%s');" % url
+      self.shell.javascript += "window.open('http://{0}');".format(url)

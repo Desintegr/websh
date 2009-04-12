@@ -31,16 +31,16 @@ class Shell:
     except UnknownCommandError, e:
       self.not_found(e.command)
     except Exception, e:
-      print 'error in builtins : %s' % e
+      print 'error in builtins : {0}'.format(e)
 
   def add_log(self, log=''):
-    self.log += "%s<br/>\n" % log
+    self.log += "{0}<br/>\n".format(log)
 
   def not_found(self, command):
-      self.add_log('websh: command not found: %s' % command)
+      self.add_log('websh: command not found: {0}'.format(command))
 
   def __prompt(self):
-    return '<span class="blue">%s</span> <span class="green">$</span> ' % self.directory
+    return '<span class="blue">{0}</span> <span class="green">$</span> '.format(self.directory)
 
   def __javascript(self):
     javascript = self.javascript

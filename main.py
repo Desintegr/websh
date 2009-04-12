@@ -8,7 +8,7 @@ PORT = 8080
 
 if __name__ == '__main__':
   server = Server((HOSTNAME, PORT), Handler)
-  print 'server running - open your web browser to http://%s:%s' % (HOSTNAME, PORT)
+  print 'server running - open your web browser to http://{0}:{1}'.format(HOSTNAME, PORT)
 
   try:
     server.serve_forever()

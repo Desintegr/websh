@@ -21,5 +21,5 @@ class Plugin:
     if base not in dir(self):
       raise UnknownCommandError(base)
 
-    args = ', '.join("'%s'" % i for i in l[1:])
-    eval('self.' + base + '(' + args + ')')
+    args = ', '.join("'{0}'".format(i) for i in l[1:])
+    eval('self.{0}({1})'.format(base, args))
