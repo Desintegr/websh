@@ -1,4 +1,5 @@
 from builtins import Builtins
+from plugin import Plugin, UnknownCommandError
 
 import string
 
@@ -20,10 +21,10 @@ class Shell:
     # execute builtins command
     try:
       self.builtins.execute(command)
-    except AttributeError:
-      self.not_found(command)
-    #except Exception, e:
-    #  print 'error in builtins : %s' % e
+    except UnknownCommandError, e:
+      self.not_found(e.command)
+    except Exception, e:
+      print 'error in builtins : %s' % e
 
   def add_log(self, log=''):
     self.log += log + "<br/>\n"
@@ -32,10 +33,7 @@ class Shell:
       self.add_log('websh: command not found: %s' % command)
 
   def __prompt(self):
-    return '<span class="blue">' \
-           + self.directory \
-           + ' </span> ' \
-           + '<span class="green">$</span> '
+    return '<span class="blue">%s</span> <span class="green">$</span> ' % self.directory
 
   def __str__(self):
     # read template file

@@ -1,4 +1,4 @@
-from plugin import Plugin
+from plugin import Plugin, UnknownCommandError
 
 import cgi
 
@@ -6,12 +6,14 @@ class Builtins(Plugin):
 
   def clear(self, *args):
     """clear the terminal screen"""
+
     self.shell.log = ''
 
   def help(self, *args):
-    """display help text
+    """
+    display help text
 
-    [command]...
+    command?
     """
 
     # keep only the first argument
@@ -21,10 +23,13 @@ class Builtins(Plugin):
     commands = []
 
     for attr in args or dir(self):
-      if callable(eval('self.' + attr)) \
-         and not attr.startswith('__') \
-         and not attr == 'execute':
-         commands.append(attr)
+      try:
+        if callable(eval('self.' + attr)) \
+           and not attr.startswith('__') \
+           and not attr == 'execute':
+           commands.append(attr)
+      except AttributeError:
+        raise UnknownCommandError(attr)
 
     if not args:
       self.shell.add_log('<span class="grey">help</span>')
@@ -74,11 +79,17 @@ class Builtins(Plugin):
     self.shell.add_log()
 
   def ls(self, *args):
-    """list commands
+    """
+    list commands
 
-    [command]...
+    command?
     this exists just for convenience. Use <span class="blue">help</span> for help.
     """
+
+    # keep only the first argument
+    args = list(args)
+    del args[1:]
+
     commands = []
 
     for attr in args or dir(self):
@@ -95,3 +106,13 @@ class Builtins(Plugin):
 
     self.shell.add_log(ls)
     self.shell.add_log()
+
+  def open(self, *args):
+    """
+    open urls
+
+    url*
+    open urls in the webbrowser.
+    """
+
+    pass
