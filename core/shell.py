@@ -30,7 +30,7 @@ class Shell:
       except UnknownCommandError as e:
         self.log.append('websh: command not found: {0}'.format(e.command))
       except Exception as e:
-        print 'error in builtins: {0}'.format(e)
+        print 'Error in builtins: {0}'.format(e)
 
     return json.dumps({'javascript': str(self.javascript),
                        'log': str(self.log),
