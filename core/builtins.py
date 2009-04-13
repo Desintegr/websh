@@ -51,6 +51,9 @@ class Builtins(Plugin):
 
     self.shell.log.append()
 
+  def _help_completion(self):
+    return self.commands()
+
   def ls(self, *args):
     """
     list commands
@@ -68,6 +71,9 @@ class Builtins(Plugin):
 
     self.shell.log.append(Utilities.format(commands))
     self.shell.log.append()
+
+  def _ls_completion(self):
+    return self.commands()
 
   def open(self, *args):
     """

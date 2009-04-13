@@ -48,6 +48,7 @@ class Handler(BaseHTTPServer.BaseHTTPRequestHandler):
       self.end_headers()
 
       complete = re.match('/ajax/completion\?input=(.*)', self.path).group(1)
+      complete = urllib.unquote_plus(complete)
       self.wfile.write(self.server.shell.completion.complete(complete))
 
     # default request

@@ -36,13 +36,8 @@ $(document).ready(function(){
       case 9: // tab key
         var value = $('#input').attr('value');
         $.getJSON('ajax/completion', { input: value }, function(data) {
-          if(data.count == 1) {
-            $('#completion').html('');
-            $('#input').attr('value', data.completion);
-          }
-          else {
+            $('#input').attr('value', data.command);
             $('#completion').html(data.completion);
-          }
         });
         e.preventDefault();
         break;

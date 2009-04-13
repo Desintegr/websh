@@ -14,7 +14,7 @@ class Plugin:
   def commands(self):
     return [attr for attr in dir(self) if \
               callable(eval('self.{0}'.format(attr))) \
-              and not re.match('^(__|[A-Z])|execute|command', attr)]
+              and not re.match('^(_|[A-Z])|execute|command', attr)]
 
   def execute(self, command):
     l = re.split('\s+', command)
