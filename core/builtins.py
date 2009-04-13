@@ -1,5 +1,5 @@
 from plugin import Plugin
-from utitities import Utilities
+from utilities import Utilities
 
 import re
 
