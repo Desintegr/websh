@@ -10,35 +10,44 @@ class Completion:
     self.shell = shell
 
   def complete(self, input):
-    l = input.split(' ')
+    l = re.split('\s+', input)
 
     matches = [m for m in self.shell.builtins.commands() if re.match(l[0], m)]
     matches_length = len(matches)
 
-    # many matches found
-    if matches_length > 1:
-        command = input
-        completion = Utilities.format(matches)
+    # matches found
+    if matches_length > 0:
 
-    # one match found
-    elif len(matches) == 1:
+      # partial or exact match
+      if not l[1:]: # only on first word
 
-      # space added for sub completion
-      if re.match('{0}\s+'.format(matches[0]), input):
+        # many matches found
+        if matches_length > 1:
+          command = Utilities.longest_common_prefix(matches)
+          completion = Utilities.format(matches)
+
+        # one match found
+        elif matches_length == 1:
+          command = matches[0]
+          completion = ''
+
+      # exact match with space added for sub completion
+      elif re.match('{0}\s+'.format(l[0]), input):
+
         try:
           submatches = \
-            [m for m in eval('self.shell.builtins._{0}_completion()'.format(matches[0])) if \
-              re.match(l[1], m)]
+            [m for m in eval('self.shell.builtins._{0}_completion()'.format(l[0])) if \
+              re.match(' '.join(l[1:]).strip(), m)]
           submatches_length = len(submatches)
 
           # many submatches found
           if submatches_length > 1:
-            command = input
+            command = '{0} {1}'.format(l[0], Utilities.longest_common_prefix(submatches))
             completion = Utilities.format(submatches)
 
           # one submatch found
           elif submatches_length == 1:
-            command = '{0} {1}'.format(matches[0], submatches[0])
+            command = '{0} {1}'.format(l[0], submatches[0])
             completion = ''
 
           # no submatch found
@@ -51,9 +60,9 @@ class Completion:
           command = input
           completion = ''
 
-      # partial or exact input
+      # no match
       else:
-        command = matches[0]
+        command = input
         completion = ''
 
     # no match found
@@ -63,3 +72,4 @@ class Completion:
 
     return json.dumps({'command': command,
                        'completion': completion})
+

@@ -26,7 +26,7 @@ class Shell:
     if command:
       # execute builtins command
       try:
-        self.builtins.execute(command)
+        self.builtins.execute(command.strip())
       except self.builtins.UnknownCommandError as e:
         self.log.append('websh: command not found: {0}'.format(e.command))
       except Exception as e:
