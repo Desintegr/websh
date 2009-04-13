@@ -1,6 +1,6 @@
-from plugin import Plugin, UnknownCommandError
+from plugin import Plugin
+from utitities import Utilities
 
-import cgi
 import re
 
 class Builtins(Plugin):
@@ -14,68 +14,40 @@ class Builtins(Plugin):
     """
     display help text
 
-    command?
+    (command)?
     """
 
-    # keep only the first argument
-    args = list(args)
-    del args[1:]
+    commands = self.commands()
 
-    commands = []
-
-    for attr in args or dir(self):
-      try:
-        if callable(eval('self.{0}'.format(attr))) \
-           and not attr.startswith('__') \
-           and not attr == 'execute':
-           commands.append(attr)
-      except AttributeError:
-        raise UnknownCommandError(attr)
-
-    if not args:
-      self.shell.log.append('<span class="grey">help</span>')
-    else:
+    if args:
+      if args[0] not in commands:
+        raise self.UnknownCommandError(args[0])
+      commands = args[:1]
       self.shell.log.append('<span class="grey">help: </span> <span class="blue">{0}</span>'.format(args[0]))
+    else:
+      self.shell.log.append('<span class="grey">help</span>')
 
     self.shell.log.append()
-    self.shell.log.append('<span class="grey">{0}{1}{2}</span>'.format(
-                            'command'.ljust(15, ' ').replace(' ', '&nbsp;'),
-                            'parameters'.ljust(15, ' ').replace(' ', '&nbsp;'),
-                            'function'.ljust(15, ' ').replace(' ', '&nbsp;')))
+    self.shell.log.append('<span class="grey">{0}</span>'.format(
+                            Utilities.tab(('command', 'parameters', 'functions'))))
 
     for command in commands:
+      # doc[0]: function
+      # doc[1]: empty
+      # doc[2]: parameters
+      # doc[3]: details
+      doc = ['not documented', '', '', '']
+
       docstring = eval('self.{0}'.format(command)).__doc__
+      if docstring:
+        for i, d in enumerate(d.strip() for d in docstring.strip().splitlines()):
+          doc[i] = d
 
-      if not docstring:
-        function = 'not documented'
-        parameters = ''
-        details = ''
-      else:
-        docstring = docstring.strip().splitlines()
+      self.shell.log.append(Utilities.tab((command, doc[2], doc[0])))
 
-        try:
-          function = docstring[0].strip()
-        except IndexError:
-          function = ''
-
-        try:
-          parameters = docstring[2].strip()
-        except IndexError:
-          parameters = ''
-
-        try:
-          details = docstring[3].strip()
-        except IndexError:
-          details = ''
-
-      self.shell.log.append('{0}{1}{2}'.format(
-                              command.ljust(15, ' ').replace(' ', '&nbsp;'),
-                              cgi.escape(parameters.ljust(15, ' ')).replace(' ', '&nbsp;'),
-                              cgi.escape(function.ljust(15, ' ')).replace(' ', '&nbsp;')))
-
-      if args and details:
+      if args and doc[3]:
         self.shell.log.append()
-        self.shell.log.append(details)
+        self.shell.log.append(doc[3])
 
     self.shell.log.append()
 
@@ -83,40 +55,25 @@ class Builtins(Plugin):
     """
     list commands
 
-    command?
+    (command)?
     this exists just for convenience. Use <span class="blue">help</span> for help.
     """
 
-    # keep only the first argument
-    args = list(args)
-    del args[1:]
+    commands = self.commands()
 
-    commands = []
+    if args:
+      if args[0] not in commands:
+        raise self.UnknownCommandError(args[0])
+      commands = args[:1]
 
-    try:
-      for attr in args or dir(self):
-        if callable(eval('self.{0}'.format(attr))) \
-           and not attr.startswith('__') \
-           and not attr == 'execute':
-           commands.append(attr)
-    except AttributeError:
-      raise UnknownCommandError(attr)
-
-    # pretty formatting: 5 words max per line
-    ls = ''
-    for i, command in enumerate(commands):
-      ls += command.ljust(15, ' ').replace(' ', '&nbsp;')
-      if (i + 1) % 5 == 0 and i != len(commands) - 1:
-        ls += "<br/>\n"
-
-    self.shell.log.append(ls)
+    self.shell.log.append(Utilities.format(commands))
     self.shell.log.append()
 
   def open(self, *args):
     """
     open urls in new windows
 
-    url+
+    (url)+
     """
 
     for arg in args:

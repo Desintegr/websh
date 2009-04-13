@@ -3,7 +3,7 @@ from completion import Completion
 from history import History
 from javascript import Javascript
 from log import Log
-from plugin import Plugin, UnknownCommandError
+from plugin import Plugin
 from prompt import Prompt
 
 import json
@@ -27,7 +27,7 @@ class Shell:
       # execute builtins command
       try:
         self.builtins.execute(command)
-      except UnknownCommandError as e:
+      except self.builtins.UnknownCommandError as e:
         self.log.append('websh: command not found: {0}'.format(e.command))
       except Exception as e:
         print 'Error in builtins: {0}'.format(e)

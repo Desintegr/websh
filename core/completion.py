@@ -1,3 +1,5 @@
+from utitities import Utilities
+
 import json
 import re
 
@@ -7,24 +9,13 @@ class Completion:
     self.shell = shell
 
   def complete(self, comp):
-    commands = []
+    commands = [c for c in self.shell.builtins.commands() if re.match(comp, c)]
 
-    for attr in dir(self.shell.builtins):
-      if callable(eval('self.shell.builtins.{0}'.format(attr))) \
-         and not attr.startswith('__') \
-         and not attr == 'execute' \
-         and re.match(comp, attr):
-         commands.append(attr)
-
-    if len(commands) == 1:
+    length = len(commands)
+    if length == 1:
       completion = commands[0]
     else:
-      # pretty formatting: 5 words max per line
-      completion = ''
-      for i, command in enumerate(commands):
-        completion += command.ljust(15, ' ').replace(' ', '&nbsp;')
-        if (i + 1) % 5 == 0 and i != len(commands) - 1:
-          completion += "<br/>\n"
+      completion = Utilities.format(commands)
 
-    return json.dumps({'count': len(commands),
+    return json.dumps({'count': length,
                        'completion': completion})
