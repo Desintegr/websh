@@ -1,13 +1,13 @@
 class Log:
 
   def __init__(self):
-    self.log = ''
+    self.log = []
 
   def append(self, command = ''):
-    self.log += "{0}<br/>\n".format(command)
+    self.log.append("{0}<br/>\n".format(command))
 
   def clear(self):
-    self.log = ''
+    self.log = []
 
   def __str__(self):
-    return self.log
+    return ''.join(self.log)
